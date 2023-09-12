@@ -8,3 +8,19 @@ create table if not exists trades (
     quantity numeric(12,2),
     quantity_name varchar(30)
 );
+
+create table if not exists hs_codes (
+    Order int,
+    Level int,
+    Code int,
+    Parent int,
+    Code_comm decimal,
+    Parent decimal,
+    Description_complex varchar(255),
+    Description varchar(255)
+);
+
+create table if not exists country_data (
+    country varchar(255)
+
+);
