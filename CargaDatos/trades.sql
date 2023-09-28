@@ -9,6 +9,7 @@ create table if not exists trades (
     quantity_name varchar(30)
 );
 
+/*
 create table if not exists hs_codes (
     Order int,
     Level int,
@@ -24,3 +25,4 @@ create table if not exists country_data (
     country varchar(255)
 
 );
+*/
