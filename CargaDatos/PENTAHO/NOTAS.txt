@@ -1,0 +1,65 @@
+Primero en "View", crear una conexion a la BD.
+
+Design, contiene las cajas para hacer las operaciones.
+Al hacer click en RUN, se ejecutaran las cajas, y se podran ver los resultados de la pestaña "Preview data"
+
+------------------------------------
+CARGAR DATOS:
+------------------------------------
+
+Table input -> Permite consultar una tabla de la BD, se selecciona la conexion, y luego se coloca la consulta SQL con limmit de preferencia, dar en preview,
+finalmente dar OK para cargar las configuraciones y dar en RUN, verificar los registros en PREVIEW DATA
+
+CSV file input -> Permite consultar archivos CSV, se debe indicar la ruta donde esta el archivo, seleccionar el Delimiter correcto, luego dar en Get Fields para cargar el archivo
+, al ver las columas se puede cambiar el tipo de datos en TYPE, luego en preview, finalmente dar OK para cargar las configuraciones y dar en RUN, verificar los registros en PREVIEW DATA. 
+
+JSON input -> Permite consultar archivos JSON, se debe indicar la ruta donde esta el archivo, luego dar al boton ADD para cargar el acrhivo, luego ir a la pestaña FIELDS
+, y agregar las columas, primero se coloca el nombre en NAME, luego se agrega el campo en PATH con el formato "$.NOMBRE.*", para verificar se puede dar en PREVIEW ROWS,
+finalmente dar OK para cargar las configuraciones y dar en RUN, verificar los registros en PREVIEW DATA.
+
+------------------------------------
+MANIPULAR, FILTRAR, UNIR, CRUZAR, ORDENAR DATOS:
+------------------------------------
+
+Para conectar un origen da datos cargados con otra caja, se debe colcoar el cursor sobre el origen datos y seleccionar el icono con una flecha, luego arrastrar a la siguiente caja,
+hacer clic sobre ella y seleccionar la opncion MAIN OUTPUT OF STEP
+
+FILTER ROWS -> Permite aplciar filtros sobre las columas del origen de datos conectado a ella, se selecciona el campo en FIELD, y luego se aplica la condicion en los campos de al lado,
+por ejemplo, si es NOT_NULL bastara con colocar dicha condicion, si es COLUMA = ALGO se usa la caja que VALUES,luego se da OK. 
+Al conectar mas de 1 filtro al mismo origen, se debe seleccionar la opcion de COPY cuando salga el mensaje de WARNING, de esta forma estara generando nuevas tablas filtradas 
+con las condiciones indicadas
+Cuando se usa esta caja, y se conecta con otras, al selecionar la conexion en TRUE, la siguiente caja tomara los valores que resulten de aplicar el filtro. Mientras que al seleccionar
+FALSE, la siguiente caja tomara todos los registros cuyo valor sea distinto de la condicion que se aplico en el filtro.
+
+SELECT VALUES -> Permite crear una tabla con los campos especificos que se necesitan, al conectar esta caja y abrir sus opciones se debe dar a GET FIELDS TO SELECT,
+para poder ver los campos, luego se suprimen los que no se necesitan, y si es necesario, se pueden renombrar en RENAME para crear la nueva tabla.
+En el apartado METADATA, se puede cambiar el tipo de dato de entrada.
+
+CALCULATOR -> Permite agregar columas con operaciones aritmeticas, se asigna un nombre en NEW FIELD, luego se define la operacion en CALCULATION, por ejemplo, RETURN LENGTH OF A STRING,
+devuelve el largo del campo que se coloque en FIELD A. Dar OK para cargar las configuraciones y dar en RUN, verificar la nueva columna en PREVIEW DATA. 
+
+STRING CUT -> Permite agregar columas con operaciones de substring, se selecciona el campo sobre el cual se aplicara el SUBSTRING en IN STREAM FIELD, luego se le asigna el nombre de
+columna en OUT STREAM FIELD, CUT FROM es la posicion inicial y CUT TO sera el largo desde la posicion incial. Este stage solo admite strings.
+
+APPEND STREAMS -> Permite unir (UNION ALL) el resultado de 2 consultas, HEAD HOP sera la primera tabla y TAIL HOP sera la segunda tabla que se una a la primera.
+
+MERGE JOIN -> Permite hacer joins entre tablas, en FIRST STEP va la tabla principal, en SECOND STEP va la tabla con la cual se hara el JOIN, luego se selecciona el JOIN TYPE,
+despues los campos a traves de los cuales se hara en JOIN, desde KEY FILED, aqui los campos se deben tipear, asi que hay que tener cuidado con el nombre, finalmente a OK.
+
+ADD SEQUENCE -> Permite añadir una columa de ID, se indica el nombre de la columna en NAME OF VALUE, luego el punto de inicio en START AT VALUE, de cuanto en cuanto se ira
+incrementando en INCREMENT BY, y hasta que numero llegara en MAXIMUN VALUE
+
+SORT ROWS -> Permite crear una copia de la tabla, aplicando un order by, se slecciona el fieldname y si es orden es ascendete o no.
+
+UNIQUE ROWS -> Permite crear una copia de la tabla, aplicando un distinc sobre el campo indicado, y retorna sus valores unicos sin importar cuantos registros existan en las otras columnas.
+Requiere que las columnas esten ordenadas previamente, usando el SORT ROWS.
+
+DUMMY(DO NOTHIN) -> No hace nada, pero permite identificar actividades, como creacion de un copia de alguna tabla, es mas que nada para ordenar.
+
+STREAM LOOKUP -> Crea una copia de la tabla base con la o las columnas y los valores de otra tabla, haciendo busquedas. Se debe indicar la 
+tabla sobre la cual se aplicara la busqueda en LOOKUP STEP, la tabla indicada aqui sera desde la cual se anexe la columna, mientras que
+la otra tabla conectada sera sobre la cual se añana dicha columna, luego indicar los campos que deben hacer match en FIELD(Tabla base) y 
+LOOKUPFIELD(Tabla sobre la que se hara la busqueda)y por ultimo indicar cual la columna cuyos valores debe retornar en el 
+apartado "SPECIFY THE FIELDS TO RETRIVE", el campo FIELD, esta sera la columna de la tabla desde la cual se desean anexar los datos.
+
+TABLE OUTPUT -> Permite cargar los resultados en una tabla destino.
